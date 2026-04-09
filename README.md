@@ -14,7 +14,8 @@ The main goal of this project was to focus on **correctness, validation and back
 
 ## Tech Stack
 
-- Node.js + Express + TypeScript
+- Node.js + Express + TypeScript (backend)
+- React + TypeScript (frontend)
 - SQLite
 - JWT for authentication
 - bcrypt for password hashing
