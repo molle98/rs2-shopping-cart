@@ -52,12 +52,14 @@ export default function App() {
   };
 
   const fetchProducts = async () => {
-    if (name && !/^[A-Za-z]{1,30}$/.test(name)) {
+    const cleanName = name.trim();
+
+    if (cleanName && !/^[A-Za-z]{1,30}$/.test(cleanName)) {
       alert("Invalid product name");
       return;
     }
 
-    const res = await fetch(`${API}/products?name=${name}&type=${type}`, {
+    const res = await fetch(`${API}/products?name=${cleanName}&type=${type}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -196,13 +198,23 @@ export default function App() {
 
         <button onClick={fetchBasket}>Load Basket</button>
 
-        <ul>
-          {basket.map((b) => (
-            <li key={b.id}>
-              {b.name} - {b.quantity}
-            </li>
-          ))}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {basket.map((b) => (
+              <tr key={b.id}>
+                <td>{b.name}</td>
+                <td>{b.quantity}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
