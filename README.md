@@ -12,16 +12,12 @@ This is a simple shopping cart system where users can:
 
 The main goal of this project was to focus on **correctness, validation and backend consistency**, rather than just UI.
 
----
-
 ## Tech Stack
 
 - Node.js + Express + TypeScript
 - SQLite
 - JWT for authentication
 - bcrypt for password hashing
-
----
 
 ## Structure
 
@@ -33,8 +29,6 @@ I separated the code into:
 
 This keeps the code easier to reason about and avoids mixing responsibilities.
 
----
-
 ## Key Decisions
 
 ### Authentication
@@ -42,8 +36,6 @@ This keeps the code easier to reason about and avoids mixing responsibilities.
 Passwords are hashed using bcrypt instead of being stored in plain text.
 
 JWT is used for authentication and protected routes require a valid token.
-
----
 
 ### Backend Validation
 
@@ -55,15 +47,11 @@ Examples:
 - product type → only Books, Music, Games
 - quantity → positive integer
 
----
-
 ### SQL Injection
 
 All queries use parameterized statements (`?`) instead of string interpolation.
 
 This prevents SQL injection and keeps queries safe.
-
----
 
 ### Basket Logic
 
@@ -76,15 +64,11 @@ I handled this in two ways:
 
 This ensures consistency even if multiple requests happen.
 
----
-
 ### Quantity Field
 
 The original model did not include quantity in the basket.
 
 I added it because otherwise it would not represent a real purchase scenario.
-
----
 
 ## Endpoints
 
@@ -92,15 +76,11 @@ I added it because otherwise it would not represent a real purchase scenario.
 
 Returns a JWT token.
 
----
-
 ### GET /products
 
 Supports filtering by name and type.
 
 Requires authentication.
-
----
 
 ### POST /basket
 
@@ -108,13 +88,9 @@ Adds a product to the basket.
 
 Prevents duplicates.
 
----
-
 ### GET /basket
 
 Returns all products in the user's basket.
-
----
 
 ## How to Run
 
@@ -129,7 +105,12 @@ Server runs on:
 http://localhost:3000
 ```
 
----
+### Test Credentials
+
+You can use the following credentials to log in:
+
+- loginName: admin
+- password: 1234
 
 ## Notes
 
