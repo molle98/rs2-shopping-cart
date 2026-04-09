@@ -107,7 +107,7 @@ http://localhost:3000
 
 ### Test Credentials
 
-You can use the following credentials to log in:
+A default user was seeded for testing purposes:
 
 - loginName: admin
 - password: 1234
