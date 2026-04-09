@@ -141,3 +141,13 @@ I kept the implementation simple but focused on:
 - structuring the code clearly
 
 The idea was to build something small but solid and easy to reason about.
+
+---
+
+## Additional Notes
+
+- Product name is validated on both client and server.
+- User input is normalized (trimmed) before validation to avoid false negatives.
+- The product list is rendered using a table to match the "grid/table" requirement.
+- Duplicate products are intentionally prevented as specified in the requirements.
+- In a real-world scenario, the basket would allow updating quantities instead of blocking duplicates.
