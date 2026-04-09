@@ -180,7 +180,6 @@ export default function App() {
                         [p.id]: Number(e.target.value),
                       })
                     }
-                    style={{ width: 50 }}
                   />
                 </td>
 

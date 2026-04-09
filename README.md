@@ -23,9 +23,9 @@ The main goal of this project was to focus on **correctness, validation and back
 
 I separated the code into:
 
-- controllers → handle requests/responses
-- services → business logic
-- middleware → authentication
+- controllers: handle requests/responses
+- services: business logic
+- middleware: authentication
 
 This keeps the code easier to reason about and avoids mixing responsibilities.
 
@@ -43,9 +43,9 @@ Even though validation could be done in the frontend, I enforced it in the backe
 
 Examples:
 
-- product name → only letters, max length 30
-- product type → only Books, Music, Games
-- quantity → positive integer
+- product name: only letters, max length 30
+- product type: only Books, Music, Games
+- quantity: positive integer
 
 ### SQL Injection
 
