@@ -123,8 +123,6 @@ I kept the implementation simple but focused on:
 
 The idea was to build something small but solid and easy to reason about.
 
----
-
 ## Additional Notes
 
 - Product name is validated on both client and server.
