@@ -22,11 +22,14 @@ export default function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [loginName, setLoginName] = useState("");
   const [password, setPassword] = useState("");
+
   const [products, setProducts] = useState<Product[]>([]);
   const [basket, setBasket] = useState<BasketItem[]>([]);
+
   const [name, setName] = useState("");
   const [type, setType] = useState("");
-  const [quantity, setQuantity] = useState(1);
+
+  const [quantities, setQuantities] = useState<Record<number, number>>({});
 
   const handleLogin = async () => {
     const res = await fetch(`${API}/login`, {
@@ -38,11 +41,22 @@ export default function App() {
     });
 
     const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "Login failed");
+      return;
+    }
+
     localStorage.setItem("token", data.token);
     setToken(data.token);
   };
 
   const fetchProducts = async () => {
+    if (name && !/^[A-Za-z]{1,30}$/.test(name)) {
+      alert("Invalid product name");
+      return;
+    }
+
     const res = await fetch(`${API}/products?name=${name}&type=${type}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -54,13 +68,27 @@ export default function App() {
   };
 
   const addToBasket = async (productId: number) => {
-    await fetch(`${API}/basket`, {
+    const qty = quantities[productId] || 1;
+
+    const res = await fetch(`${API}/basket`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ productId, quantity }),
+      body: JSON.stringify({ productId, quantity: qty }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message);
+      return;
+    }
+
+    setQuantities({
+      ...quantities,
+      [productId]: 1,
     });
 
     fetchBasket();
@@ -80,69 +108,102 @@ export default function App() {
   if (!token) {
     return (
       <div className="container">
-        <h2>Login</h2>
-        <input
-          placeholder="loginName"
-          value={loginName}
-          onChange={(e) => setLoginName(e.target.value)}
-        />
-        <br />
-        <input
-          placeholder="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-        <button onClick={handleLogin}>Login</button>
+        <div className="section">
+          <h2>Login</h2>
+
+          <input
+            placeholder="loginName"
+            value={loginName}
+            onChange={(e) => setLoginName(e.target.value)}
+          />
+          <br />
+
+          <input
+            placeholder="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <br />
+
+          <button onClick={handleLogin}>Login</button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Products</h2>
+    <div className="container">
+      <div className="section">
+        <h2>Products</h2>
 
-      <input
-        placeholder="name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+        <input
+          placeholder="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
-      <select onChange={(e) => setType(e.target.value)}>
-        <option value="">All</option>
-        <option value="Books">Books</option>
-        <option value="Music">Music</option>
-        <option value="Games">Games</option>
-      </select>
+        <select onChange={(e) => setType(e.target.value)}>
+          <option value="">All</option>
+          <option value="Books">Books</option>
+          <option value="Music">Music</option>
+          <option value="Games">Games</option>
+        </select>
 
-      <button onClick={fetchProducts}>Search</button>
+        <button onClick={fetchProducts}>Search</button>
 
-      <ul>
-        {products.map((p) => (
-          <li key={p.id}>
-            {p.name} ({p.type})
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              style={{ width: 50, marginLeft: 10 }}
-            />
-            <button onClick={() => addToBasket(p.id)}>Add</button>
-          </li>
-        ))}
-      </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Quantity</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-      <h2>Basket</h2>
-      <button onClick={fetchBasket}>Load Basket</button>
+          <tbody>
+            {products.map((p) => (
+              <tr key={p.id}>
+                <td>{p.name}</td>
+                <td>{p.type}</td>
 
-      <ul>
-        {basket.map((b) => (
-          <li key={b.id}>
-            {b.name} - {b.quantity}
-          </li>
-        ))}
-      </ul>
+                <td>
+                  <input
+                    type="number"
+                    value={quantities[p.id] || 1}
+                    onChange={(e) =>
+                      setQuantities({
+                        ...quantities,
+                        [p.id]: Number(e.target.value),
+                      })
+                    }
+                    style={{ width: 50 }}
+                  />
+                </td>
+
+                <td>
+                  <button onClick={() => addToBasket(p.id)}>Add</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="section">
+        <h2>Basket</h2>
+
+        <button onClick={fetchBasket}>Load Basket</button>
+
+        <ul>
+          {basket.map((b) => (
+            <li key={b.id}>
+              {b.name} - {b.quantity}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
