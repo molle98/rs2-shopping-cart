@@ -68,7 +68,7 @@ This ensures consistency even if multiple requests happen.
 
 The original model did not include quantity in the basket.
 
-I added it because otherwise it would not represent a real purchase scenario.
+I added it to better represent the number of items selected by the user and to support the quantity input required in the UI.
 
 ## Endpoints
 
