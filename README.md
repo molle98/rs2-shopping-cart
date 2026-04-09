@@ -95,16 +95,20 @@ Returns all products in the user's basket.
 
 ## How to Run
 
-```bash
-npm install
+### Backend
+
+npm install  
 npm run dev
-```
 
-Server runs on:
+Runs on: http://localhost:3000
 
-```
-http://localhost:3000
-```
+### Frontend
+
+cd frontend  
+npm install  
+npm run dev
+
+Runs on: http://localhost:5173
 
 ### Test Credentials
 
