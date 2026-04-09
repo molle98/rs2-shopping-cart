@@ -79,7 +79,7 @@ export default function App() {
 
   if (!token) {
     return (
-      <div style={{ padding: 20 }}>
+      <div className="container">
         <h2>Login</h2>
         <input
           placeholder="loginName"
