@@ -31,7 +31,6 @@ export const initDB = async () => {
     );
   `);
 
-  // seed user
   const passwordHash = await bcrypt.hash("1234", 10);
 
   await db.run(
@@ -40,7 +39,6 @@ export const initDB = async () => {
     [passwordHash],
   );
 
-  // seed products
   await db.run(`
     INSERT OR IGNORE INTO products (id, name, type, description) VALUES
     (1, 'BookOne', 'Books', 'A book'),
